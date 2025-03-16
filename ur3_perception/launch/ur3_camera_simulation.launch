@@ -1,0 +1,79 @@
+<launch>
+  <!-- Set Robot Model (UR3e by default) -->
+  <arg name="robot_model" default="ur3e"/>
+  
+  <!-- Load the Gazebo empty world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+  </include>
+
+  <!-- Load the UR3e robot with camera -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro $(find ur_description)/urdf/ur3e.xacro" />
+
+  <!-- Spawn UR3e robot in Gazebo -->
+  <node name="ur3_spawn" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param robot_description -model ur3e_robot" output="screen"/>
+
+  <!-- Publish TF from 'world' to 'base_link' -->
+  <node pkg="tf" type="static_transform_publisher" name="world_to_base_link"
+        args="0 0 0 0 0 0 world base_link 10"/>
+
+  <!-- Start Joint State Publisher (Required for RViz) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+  <!-- Start Robot State Publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Start RViz with pre-configured settings -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur3_perception)/config/ur3e_rviz.rviz"/>
+
+  <!-- RGB-D Camera Link -->
+<link name="camera_link">
+  <visual>
+    <geometry>
+      <box size="0.05 0.05 0.05"/>  <!-- Represents the camera size -->
+    </geometry>
+    <material name="black"/>
+  </visual>
+</link>
+
+<!-- Camera Fixed Joint -->
+<joint name="camera_joint" type="fixed">
+  <parent link="wrist_3_link"/>  <!-- Attach camera to robot wrist -->
+  <child link="camera_link"/>
+  <origin xyz="0 0 0.05" rpy="0 0 0"/>
+</joint>
+
+<!-- Camera Sensor Plugin -->
+<gazebo reference="camera_link">
+  <sensor type="depth" name="camera">
+    <update_rate>30.0</update_rate>
+    <camera>
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.05</near>
+        <far>5.0</far>
+      </clip>
+    </camera>
+    <plugin name="gazebo_ros_depth_camera_controller" filename="libgazebo_ros_depth_camera.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30.0</updateRate>
+      <cameraName>camera</cameraName>
+      <frameName>camera_link</frameName>
+      <imageTopicName>camera/color/image_raw</imageTopicName>
+      <cameraInfoTopicName>camera/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>camera/depth/image_raw</depthImageTopicName>
+      <pointCloudTopicName>camera/depth/points</pointCloudTopicName>
+    </plugin>
+  </sensor>
+</gazebo>
+
+
+</launch>
