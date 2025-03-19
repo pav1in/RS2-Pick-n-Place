@@ -1,8 +1,0 @@
-prefix=/home/megha/git/RS2/ur3_perception/build/devel
-
-Name: ur3_perception
-Description: Description of ur3_perception
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

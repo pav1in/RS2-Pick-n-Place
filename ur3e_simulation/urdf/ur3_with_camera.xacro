@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot name="ur3e_with_cameras" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include UR3e model -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur3e_macro.xacro"/>
+  <xacro:ur3e_robot prefix=""/>
+  
+  <gazebo>
+    <plugin name="set_initial_pose" filename="libgazebo_ros_joint_pose_trajectory.so">
+      <joint name="shoulder_pan_joint">
+        <value>0</value>
+      </joint>
+      <joint name="shoulder_lift_joint">
+        <value>1.57</value>
+      </joint>
+      <joint name="elbow_joint">
+        <value>-1.57</value>
+      </joint>
+      <joint name="wrist_1_joint">
+        <value>0</value>
+      </joint>
+      <joint name="wrist_2_joint">
+        <value>0.0</value>
+      </joint>
+      <joint name="wrist_3_joint">
+        <value>0.0</value>
+      </joint>
+    </plugin>
+  </gazebo>
+
+
+</robot>
