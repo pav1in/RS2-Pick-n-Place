@@ -2,8 +2,8 @@
 <robot name="rg2" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="pi" value="3.141592654" />
-    <xacro:include filename="$(find rg2_description)/urdf/rg2.gazebo.xacro" />
-    <xacro:include filename="$(find rg2_description)/urdf/rg2.transmissions.xacro" />
+    <xacro:include filename="$(find ur3_gripper_sim)/urdf/ur3_gripper.gazebo.xacro" />
+    <xacro:include filename="$(find ur3_gripper_sim)/urdf/ur3_gripper.transmissions.xacro" />
 
     <link name="base_link">
     </link>
@@ -16,13 +16,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_Hand_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_Hand_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_Hand_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_Hand_vis.STL"/>
             </geometry>
         </visual>
         <!-- <inertial>
@@ -56,13 +56,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_LeftMomentArm_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_LeftMomentArm_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_LeftMomentArm_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_LeftMomentArm_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
@@ -89,13 +89,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_LeftFinger_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_LeftFinger_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_LeftFinger_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_LeftFinger_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
@@ -122,13 +122,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_LeftTrussArm_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_LeftTrussArm_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_LeftTrussArm_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_LeftTrussArm_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
@@ -156,13 +156,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_RightMomentArm_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_RightMomentArm_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_RightMomentArm_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_RightMomentArm_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
@@ -189,13 +189,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_RightFinger_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_RightFinger_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_RightFinger_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_RightFinger_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
@@ -222,13 +222,13 @@
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/collision/RG2_RightTrussArm_col.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/collision/RG2_RightTrussArm_col.STL"/>
             </geometry>
         </collision>
         <visual>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
             <geometry>
-                <mesh filename="package://rg2_description/meshes/visual/RG2_RightTrussArm_vis.STL"/>
+                <mesh filename="package://ur3_gripper_sim/meshes/visual/RG2_RightTrussArm_vis.STL"/>
             </geometry>
         </visual>
         <inertial>
