@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load joint controller configurations from YAML -->
+  <rosparam file="$(find ur3_gripper_sim)/config/position_controller.yaml" command="load"/>
+
+  <!-- Load controllers -->
+  <node pkg="controller_manager" type="spawner" name="controller_spawner" respawn="false"
+        output="screen" args="joint_state_controller gripper_joint_position" />
+</launch>

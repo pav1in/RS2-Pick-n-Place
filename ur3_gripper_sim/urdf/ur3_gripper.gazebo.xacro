@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<!-- ros_control plugin -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/</robotNamespace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+		</plugin>
+	</gazebo>
+
+	<!-- Hand -->
+	<gazebo reference="hand_link">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+    <!-- Left Finger -->
+	<gazebo reference="l_moment_arm_link">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	<gazebo reference="l_truss_arm_link">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	<gazebo reference="l_finger">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	<!-- Right Finger -->
+	<gazebo reference="r_moment_arm_link">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	<gazebo reference="r_truss_arm_link">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	<gazebo reference="r_finger">
+		<mu1>0.2</mu1>
+		<mu2>0.2</mu2>
+		<material>Gazebo/White</material>
+		<selfCollide>false</selfCollide>
+	</gazebo>
+
+	
+	<gazebo>
+	<plugin name="mimic_l_finger_2_joint" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+		<joint>gripper_joint</joint>
+		<mimicJoint>l_finger_2_joint</mimicJoint>
+		<multiplier>-1.0</multiplier>
+		<offset>0.0</offset>
+		<maxEffort>10.6</maxEffort>
+	</plugin>
+	</gazebo>
+
+	<gazebo>
+	<plugin name="mimic_l_finger_passive_joint" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+		<joint>gripper_joint</joint>
+		<mimicJoint>l_finger_passive_joint</mimicJoint>
+		<multiplier>1.0</multiplier>
+		<offset>0.0</offset>
+		<maxEffort>10.6</maxEffort>
+	</plugin>
+	</gazebo>
+
+	<gazebo>
+	<plugin name="mimic_r_finger_1_joint" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+		<joint>gripper_joint</joint>
+		<mimicJoint>r_finger_1_joint</mimicJoint>
+		<multiplier>-1.0</multiplier>
+		<offset>0.0</offset>
+		<maxEffort>10.6</maxEffort>
+	</plugin>
+	</gazebo>
+
+	<gazebo>
+	<plugin name="mimic_r_finger_2_joint" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+		<joint>gripper_joint</joint>
+		<mimicJoint>r_finger_2_joint</mimicJoint>
+		<multiplier>1.0</multiplier>
+		<offset>0.0</offset>
+		<maxEffort>10.6</maxEffort>
+	</plugin>
+	</gazebo>
+
+	<gazebo>
+	<plugin name="mimic_r_finger_passive_joint" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+		<joint>gripper_joint</joint>
+		<mimicJoint>r_finger_passive_joint</mimicJoint>
+		<multiplier>-1.0</multiplier>
+		<offset>0.0</offset>
+		<maxEffort>10.6</maxEffort>
+	</plugin>
+	</gazebo>
+
+
+</robot>
