@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- Load joint controller configurations from YAML -->
+  <!-- Load joint controller configurations -->
   <rosparam file="$(find ur3_gripper_sim)/config/position_controller.yaml" command="load"/>
 
   <!-- Load controllers -->

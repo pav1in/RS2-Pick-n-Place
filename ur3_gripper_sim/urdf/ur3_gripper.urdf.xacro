@@ -73,6 +73,9 @@
                      izz="0.000083" />
         </inertial>
     </link>
+
+
+
     <joint name="l_finger_2_joint" type="revolute">
         <parent link="l_moment_arm_link"/>
         <child link="l_finger_link"/>
@@ -84,7 +87,7 @@
         <dynamics damping="0.1" friction="0.0" />
         <implicitSpringDamper>True</implicitSpringDamper>
     </joint>
-    <!-- <xacro:insert_transmission name="l_finger_2_joint" /> -->
+    <xacro:insert_transmission name="l_finger_2_joint" />
     <link name="l_finger_link">
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
@@ -117,7 +120,7 @@
         <dynamics damping="0.1" friction="0.0" />
         <implicitSpringDamper>True</implicitSpringDamper>
     </joint>
-    <!-- <xacro:insert_transmission name="l_finger_passive_joint" /> -->
+    <xacro:insert_transmission name="l_finger_passive_joint" />
     <link name="l_truss_arm_link">
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
@@ -151,7 +154,7 @@
         <dynamics damping="0.1" friction="0.0" />
         <implicitSpringDamper>True</implicitSpringDamper>
     </joint>
-    <!-- <xacro:insert_transmission name="r_finger_1_joint" /> -->
+    <xacro:insert_transmission name="r_finger_1_joint" />
     <link name="r_moment_arm_link">
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
@@ -184,7 +187,7 @@
         <dynamics damping="0.1" friction="0.0" />
         <implicitSpringDamper>True</implicitSpringDamper>
     </joint>
-    <!-- <xacro:insert_transmission name="r_finger_2_joint" /> -->
+    <xacro:insert_transmission name="r_finger_2_joint" />
     <link name="r_finger_link">
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
@@ -217,7 +220,7 @@
         <dynamics damping="0.1" friction="0.0" />
         <implicitSpringDamper>True</implicitSpringDamper>
     </joint>
-    <!-- <xacro:insert_transmission name="r_finger_passive_joint" /> -->
+    <xacro:insert_transmission name="r_finger_passive_joint" />
     <link name="r_truss_arm_link">
         <collision>
             <origin xyz="0.00 0.00 0.00" rpy="0.00 0.00 0.00"/>
