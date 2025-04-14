@@ -1,0 +1,23 @@
+  RRTStarPlannerPlugin:
+    # Not an OMPL-based planner, so skip "type: geometric::<...>"
+    # Instead, set your plugin name and any plugin-specific parameters:
+    type: custom::RRTStarPlannerPlugin
+    planning_plugin: "rrt_star_planner_plugin/RRTStarPlannerManager"
+    request_adapters: ""
+    # Additional optional parameters if your plugin uses them:
+    start_x: 0.0
+    start_y: 0.0
+    start_z: 0.0
+    goal_x: 5.0
+    goal_y: 5.0
+    goal_z: 5.0
+    x_min: -10.0
+    x_max: 10.0
+    y_min: -10.0
+    y_max: 10.0
+    z_min: -10.0
+    z_max: 10.0
+    step_size: 0.5
+    max_iter: 500
+    goal_sample_rate: 0.1
+    neighbor_radius: 1.0
