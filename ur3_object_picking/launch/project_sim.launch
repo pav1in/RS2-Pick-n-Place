@@ -9,8 +9,9 @@
   </include>
 
   <!-- 2. Launch MoveIt for UR3 in simulation mode -->
-  <include file="$(find ur3_moveit_config)/launch/moveit_planning_execution.launch">
-    <arg name="sim" value="true" />
+  <!-- <include file="$(find ur3_moveit_config)/launch/moveit_planning_execution.launch"> -->
+  <include file="$(find ur3_object_picking)/launch/custom_moveit_planning_execution.launch">
+    <!-- <arg name="sim" value="true" /> -->
   </include>
 
   <!-- 3. Launch RViz with planning config -->

@@ -34,7 +34,7 @@
 
 
 
+
   <export>
-    <planning_interface plugin="${prefix}/config/rrt_star_planner_plugin_description.xml"/>
   </export>
 </package>

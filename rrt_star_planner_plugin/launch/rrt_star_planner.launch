@@ -1,0 +1,15 @@
+<launch>
+  <!-- 1. Bring up UR3 in Gazebo -->
+  <arg name="paused" default="true" />
+  <include file="$(find ur_gazebo)/launch/ur3_bringup.launch">
+    <arg name="paused" value="$(arg paused)" />
+  </include>
+
+  <!-- 2. Start MoveIt with RRT* plugin -->
+  <include file="$(find rrt_star_planner_plugin)/launch/rrt_star_moveit_execution.launch" />
+
+  <!-- 3. Start RViz with custom config -->
+  <node name="rviz" pkg="rviz" type="rviz" output="screen"
+        args="-d $(find rrt_star_planner_plugin)/rviz/ur3_planning_config.rviz"
+        required="true" />
+</launch>
