@@ -1,0 +1,20 @@
+# BP‑RRT* planner parameters
+start_x:        0.0
+start_y:        0.0
+start_z:        0.0
+
+goal_x:         0.8
+goal_y:         0.2
+goal_z:         0.5
+
+x_min:         -1.0
+x_max:          1.0
+y_min:         -1.0
+y_max:          1.0
+z_min:          0.0
+z_max:          1.0
+
+step_size:      0.05
+max_iters:      500
+goal_bias:      0.10
+neighbor_radius: 0.2

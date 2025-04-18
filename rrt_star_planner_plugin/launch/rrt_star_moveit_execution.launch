@@ -15,8 +15,9 @@
 
   <!-- Start Move Group with RRT* plugin -->
   <node name="move_group" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen">
-    <param name="planning_pipeline" value="ompl" />
-    <param name="ompl_planning_plugin" value="rrt_star_planner_plugin/RRTStarPlannerManager" />
+    <param name="planning_pipeline" value="rrt_star_planner" />
+    <param name="rrt_star_planner_planning_plugin" value="rrt_star_planner_plugin/RRTStarPlannerManager" />
+
     <param name="planning_plugin" value="rrt_star_planner_plugin/RRTStarPlannerManager" />
     <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager" />
     <param name="allow_trajectory_execution" value="true"/>

@@ -23,6 +23,7 @@
   <exec_depend>moveit_msgs</exec_depend>
 
   <export>
-    <planning_interface plugin="${prefix}/config/rrt_star_planner_plugin_description.xml"/>
+      <planning_interface plugin="${prefix}/config/rrt_star_planner_plugin_description.xml"/>
+      <plugin plugin="${prefix}/config/rrt_star_planner_plugin_description.xml"/>
   </export>
 </package>
