@@ -6,6 +6,14 @@
 
 // Package these as “obstacle spheres” that your planner can use in its collision checks.
 
+// get obstacle spheres (visualise)
+// uniformly distribute points (point cloud) around the surface of each sphere 
+// use convex hull package to transform obstacle spheres into point groups/clouds
+// split working area into 27 equal volumes 
+// divide obstacle clouds into the volumes & compute obstacle volumes in each area
+// calculate free volume in each of the 27 volumes (Vfree = Vi - Vobs)
+// return obstacle spheres
+
 #include <ros/ros.h>
 #include <string>
 #include <vector>
