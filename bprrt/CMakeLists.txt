@@ -1,60 +1,111 @@
-######################################################################
-## 1. Build flags & C++ standard
-######################################################################
-add_compile_options(-Wall -Wextra -Wno-unused-parameter -std=c++17)
+cmake_minimum_required(VERSION 2.8.3)
+project(bprrt)
 
-# -------------------------------------------------------------------
-# Decide ABI **once** and propagate to every target that needs Torch
-# -------------------------------------------------------------------
-#   * If you downloaded *_cxx11_abi*  ->  set TORCH_CXX11_ABI=1
-#   * If you downloaded *_pre_cxx11_* ->  set TORCH_CXX11_ABI=0
-#
-# The variable can be exported from the shell, or we default to 1
-# (which is what ROS Noetic, GCC‑9 and most modern packages use).
-# -------------------------------------------------------------------
-if(DEFINED ENV{TORCH_CXX11_ABI})
-  set(TORCH_CXX11_ABI $ENV{TORCH_CXX11_ABI})
-else()
-  set(TORCH_CXX11_ABI 1)
-endif()
-add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=${TORCH_CXX11_ABI})
+## 1 Compiler flags
+add_compile_options(-std=c++17 -Wall -Wextra -Wno-unused-parameter -fsanitize=address -fno-omit-frame-pointer) 
+add_link_options(-fsanitize=address)
 
-######################################################################
-## 2. Dependencies
-######################################################################
+## 2 Find ROS, MoveIt!, Eigen
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  geometry_msgs
+  gazebo_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_core
+  moveit_ros_planning_interface
+  pluginlib
+)
 find_package(Eigen3 REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp std_msgs geometry_msgs
-  tf2 tf2_ros tf2_geometry_msgs
-  moveit_core moveit_ros_planning_interface pluginlib
+## 3 Find LibTorch (CPU‐only)
+find_package(Torch REQUIRED PATHS $ENV{TORCH_HOME}/share/cmake/Torch)
+
+## 4 Catkin meta‐package exports
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES spawnmanager boxtracker bp_rrt_star_lib
+  CATKIN_DEPENDS
+    roscpp std_msgs geometry_msgs gazebo_msgs
+    tf2 tf2_ros tf2_geometry_msgs
+    moveit_core moveit_ros_planning_interface pluginlib
 )
 
-# LibTorch -----------------------------------------------------------
-find_package(Torch REQUIRED PATHS $ENV{CMAKE_PREFIX_PATH})
-# (no ABI flags here – already handled globally)
+## 5 Include paths
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
+  ${TORCH_INCLUDE_DIRS}
+)
 
-######################################################################
-## 3. catkin_package …   (unchanged)
-######################################################################
+## 6 spawnmanager library
+add_library(spawnmanager
+  src/spawnmanager.cpp
+)
+target_link_libraries(spawnmanager
+  ${catkin_LIBRARIES}
+)
 
-######################################################################
-## 5. Libraries
-######################################################################
-add_library(boxtracker src/boxtracker.cpp)
-target_link_libraries(boxtracker ${catkin_LIBRARIES})
+## 7 boxtracker library
+add_library(boxtracker
+  src/boxtracker.cpp
+)
 target_include_directories(boxtracker PUBLIC include)
-
-add_library(bp_rrt_star_lib src/bp_rrt_star_lib.cpp)
-target_link_libraries(bp_rrt_star_lib ${catkin_LIBRARIES} ${TORCH_LIBRARIES})
-target_include_directories(bp_rrt_star_lib PUBLIC include)
-
-######################################################################
-## 6. Executable node
-######################################################################
-add_executable(bprrt_node src/bprrt_node.cpp)
-target_link_libraries(bprrt_node
-  bp_rrt_star_lib boxtracker
-  ${catkin_LIBRARIES} ${TORCH_LIBRARIES}
+target_link_libraries(boxtracker
+  ${catkin_LIBRARIES}
 )
-target_include_directories(bprrt_node PUBLIC include)
+
+add_executable(box_tracker_node src/box_tracker_node.cpp)
+target_link_libraries(box_tracker_node
+  boxtracker           
+  ${catkin_LIBRARIES}
+)
+install(TARGETS box_tracker_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## 8 bp_rrt_star core library
+add_library(bp_rrt_star_lib
+  src/bp_rrt_star_lib.cpp
+)
+target_link_libraries(bp_rrt_star_lib
+  ${catkin_LIBRARIES}
+  ${TORCH_LIBRARIES}
+)
+
+## 9 box_spawner_node
+add_executable(box_spawner_node
+  src/box_spawner_node.cpp
+)
+target_link_libraries(box_spawner_node
+  spawnmanager
+  ${catkin_LIBRARIES}
+)
+
+## 10 bprrt_node
+add_executable(bprrt_node
+  src/bprrt_node.cpp
+)
+target_link_libraries(bprrt_node
+  spawnmanager
+  boxtracker
+  bp_rrt_star_lib
+  ${catkin_LIBRARIES}
+  ${TORCH_LIBRARIES}
+)
+
+## 11 Install
+install(TARGETS
+    spawnmanager
+    boxtracker
+    bp_rrt_star_lib
+    box_spawner_node
+    bprrt_node
+    
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

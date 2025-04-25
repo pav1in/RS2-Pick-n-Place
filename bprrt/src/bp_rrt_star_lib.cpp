@@ -25,8 +25,13 @@ BP_RRTStar::BP_RRTStar(const Eigen::Vector3d& start,
 
 BP_RRTStar::~BP_RRTStar()
 {
-  for (auto *n : tree_) delete n;
-  delete goal_;
+  for (Node *n : tree_)
+  delete n;
+
+  // If goal_ was never pushed into tree_, delete it now.
+  // (If it *was* in tree_, it’s already been deleted above.)
+  bool goal_in_tree = std::find(tree_.begin(), tree_.end(), goal_) != tree_.end();
+  if (!goal_in_tree) delete goal_;
 }
 
 bool BP_RRTStar::plan()
@@ -157,7 +162,7 @@ void BP_RRTStar::rewire(Node* n, const std::vector<Node*>& nbrs)
 
 bool BP_RRTStar::collisionFree(const Node& a, const Node& b) const
 {
-  // ---- your convex‐hull or other checker goes here ----
+ 
   return true;
 }
 

@@ -21,6 +21,10 @@
   <build_depend>moveit_core</build_depend>
   <build_depend>moveit_ros_planning_interface</build_depend>
   <build_depend>pluginlib</build_depend>
+  <build_depend>rosconsole</build_depend>
+  <build_depend>eigen3</build_depend>
+  <build_depend>gazebo_msgs</build_depend>
+
 
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
@@ -31,10 +35,9 @@
   <exec_depend>moveit_core</exec_depend>
   <exec_depend>moveit_ros_planning_interface</exec_depend>
   <exec_depend>pluginlib</exec_depend>
-
-  <!-- system libs -->
-  <build_depend>eigen3</build_depend>
+  <exec_depend>rosconsole</exec_depend>
   <exec_depend>eigen3</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
 
   <export>
 

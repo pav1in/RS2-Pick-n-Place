@@ -1,21 +1,28 @@
 <launch>
-  <!-- 1. Gazebo + UR3 -->
+  <!-- use sim clock -->
+  <param name="use_sim_time" value="true"/>
+
+  <!-- 1) UR3 in Gazebo -->
   <arg name="paused" default="true"/>
   <include file="$(find ur_gazebo)/launch/ur3_bringup.launch">
     <arg name="paused" value="$(arg paused)"/>
   </include>
 
-  <!-- 2. MoveIt! -->
+  <!-- 2) MoveIt! -->
   <include file="$(find ur3_moveit_config)/launch/moveit_planning_execution.launch">
     <arg name="sim" value="true"/>
   </include>
 
-  <!-- 3. RViz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find bprrt)/rviz/ur3_planning_config.rviz" required="true"/>
+  <!-- 3) Spawn 5 random boxes -->
+  <node pkg="bprrt" type="box_spawner_node" name="box_spawner" output="screen"/>
 
-  <!-- 4. BP‑RRT* node -->
-  <node name="bprrt_node" pkg="bprrt" type="bprrt_node" output="screen">
-    <!-- load your params -->
-    <rosparam file="$(find bprrt)/config/bp_rrt_params.yaml" command="load" />
-  </node>
+  <!-- 4) Track those boxes -->
+  <node pkg="bprrt" type="box_tracker_node" name="box_tracker" output="screen"/>
+
+  <!-- 5) Plan to each one -->
+  <node pkg="bprrt" type="bprrt_node" name="bprrt" output="screen"/>
+
+  <!-- 6) RViz (show PoseArray topics) -->
+  <node pkg="rviz" type="rviz" name="rviz"
+        args="-d $(find bprrt)/rviz/ur3_planning_config.rviz"/>
 </launch>

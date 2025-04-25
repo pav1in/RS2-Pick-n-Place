@@ -1,40 +1,43 @@
 #pragma once
 
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseArray.h>
-#include <Eigen/Core>
-#include "bp_rrt_star_lib.h"   // brings in bprrt::Bounds
+#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/robot_state/conversions.h>
+#include <moveit_msgs/DisplayTrajectory.h>
+#include <moveit_msgs/RobotTrajectory.h>
+#include <Eigen/Geometry>
+#include "bp_rrt_star_lib.h"
 
-namespace bprrt
-{
+namespace bprrt {
 
-class BPRRTPlannerNode
-{
+class BPRRTPlannerNode {
 public:
-  // pass NodeHandle by value (so we can give a nice default) 
-  explicit BPRRTPlannerNode(ros::NodeHandle nh = ros::NodeHandle("~"));
-
+  explicit BPRRTPlannerNode(ros::NodeHandle& nh_global,
+                            ros::NodeHandle& nh_private);
   void spin();
 
 private:
-  void startCb(const geometry_msgs::PoseStamped& p);
-  void goalCb (const geometry_msgs::PoseStamped& p);
-  void planAndPublish();
+  void onNewBoxes(const geometry_msgs::PoseArray::ConstPtr& msg);
+  bool planTo(const Eigen::Vector3d& start_pt,
+              const Eigen::Vector3d& goal_pt,
+              geometry_msgs::PoseArray& out_path);
+  bool planCartesian(const std::vector<geometry_msgs::Pose>& rrt_path,
+                     moveit_msgs::RobotTrajectory& out_traj);
 
-  ros::NodeHandle    nh_;
-  ros::Subscriber    sub_start_, sub_goal_;
-  ros::Publisher     pub_path_;
+  // subscribers & publishers
+  ros::Subscriber boxes_sub_;
+  ros::Time       last_boxes_stamp_{0,0};
+  ros::Publisher  path_pub_, cart_traj_pub_;
 
-  Eigen::Vector3d    start_pt_{0,0,0}, goal_pt_{0,0,0};
-  bool               have_start_{false}, have_goal_{false};
+  // MoveIt interface
+  moveit::planning_interface::MoveGroupInterface move_group_;
 
-  // loaded from params/bp_rrt_params.yaml
-  Bounds             bounds_;
-  double             step_size_;
-  int                max_iters_;
-  double             goal_bias_;
-  double             neighbor_radius_;
+  // planning parameters
+  Eigen::Vector3d bounds_low_, bounds_high_;
+  double step_size_;
+  int    max_iters_;
+  double goal_bias_, neighbor_radius_;
 };
 
 } // namespace bprrt
