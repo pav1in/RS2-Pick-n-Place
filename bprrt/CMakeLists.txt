@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(bprrt)
 
 ## 1 Compiler flags
-add_compile_options(-std=c++17 -Wall -Wextra -Wno-unused-parameter -fsanitize=address -fno-omit-frame-pointer) 
-add_link_options(-fsanitize=address)
+add_compile_options(-std=c++17 -Wall -Wextra -Wno-unused-parameter) ##-fsanitize=address -fno-omit-frame-pointer
+## add_link_options(-fsanitize=address)
 
 ## 2 Find ROS, MoveIt!, Eigen
 find_package(catkin REQUIRED COMPONENTS
@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core
   moveit_ros_planning_interface
   pluginlib
+      
 )
 find_package(Eigen3 REQUIRED)
 
@@ -93,7 +94,7 @@ target_link_libraries(bprrt_node
   spawnmanager
   boxtracker
   bp_rrt_star_lib
-  ${catkin_LIBRARIES}
+  ${catkin_LIBRARIES}    
   ${TORCH_LIBRARIES}
 )
 

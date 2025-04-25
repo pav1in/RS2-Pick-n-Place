@@ -3,7 +3,7 @@
   <name>bprrt</name>
   <version>0.0.1</version>
   <description>
-    BP‑RRT* planner + staged NN predictor for UR3 (collision placeholder).
+    description
   </description>
 
   <maintainer email="you@your.domain">Your Name</maintainer>
@@ -38,6 +38,7 @@
   <exec_depend>rosconsole</exec_depend>
   <exec_depend>eigen3</exec_depend>
   <exec_depend>gazebo_msgs</exec_depend>
+
 
   <export>
 
