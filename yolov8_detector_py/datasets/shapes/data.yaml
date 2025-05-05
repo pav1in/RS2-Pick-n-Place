@@ -1,0 +1,14 @@
+# file: ~/git/RS2/yolov8_detector_py/datasets/shapes/data.yaml
+
+# <-- this is the dataset root
+path: /home/megha/git/RS2/yolov8_detector_py/datasets/shapes
+
+# <-- relative to `path`, where the images are
+train: images/train
+val:   images/val
+
+# number of classes
+nc: 2
+
+# class names
+names: ['cube','cylinder']
