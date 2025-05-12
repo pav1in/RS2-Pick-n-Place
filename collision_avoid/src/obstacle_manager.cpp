@@ -12,7 +12,7 @@
 // split working area into 27 equal volumes 
 // divide obstacle clouds into the volumes & compute obstacle volumes in each area
 // calculate free volume in each of the 27 volumes (Vfree = Vi - Vobs)
-// return obstacle spheres
+
 
 #include "obstacle_manager.hpp"
 
@@ -139,9 +139,9 @@ std::vector<std::vector<double>> ObstacleManager::defineWorkspaceSplit() {
 
 // Create a way to split workspace using cubes 
 
-std::vector<Plane> ObstacleManager::defineWorkspacePlanes(std::vector<std::vector<double>> workspacePoints) {
+std::vector<Plane> ObstacleManager::defineWorkspacePlanes() {
     std::vector<Plane> planes;
-
+    std::vector<std::vector<double>> workspacePoints = defineWorkspaceSplit();
     // Define the planes of the workspace using the corners
     // Assuming the workspace is a rectangular prism, creates 12 planes
     // 4 planes for each face of the prism (x, y, z)
@@ -163,8 +163,11 @@ std::vector<Plane> ObstacleManager::defineWorkspacePlanes(std::vector<std::vecto
     return planes;
 }
 
-std::vector<Polyhedron_3> ObstacleManager::workspaceSplit(Polyhedron_3 P, std::vector<Plane> planes) {
+
+std::vector<Polyhedron_3> ObstacleManager::workspaceSplit(Polyhedron_3 P) {
     std::vector<Polyhedron_3> slices;
+    std::vector<Plane> planes = defineWorkspacePlanes();
+
     for(auto plane : planes) {
 
         CGAL::Polygon_mesh_processing::slice(P, plane, std::back_inserter(slices));
@@ -177,7 +180,7 @@ std::vector<Polyhedron_3> ObstacleManager::workspaceSplit(Polyhedron_3 P, std::v
 
 }
 
-std::vector<double> ObstacleManager::calculateFreeVolumes(std::vector<Polyhedron_3> objectVolumes, std::vector<std::vector<double>> splitWorkspace){
+void ObstacleManager::calculateFreeVolumes(std::vector<Polyhedron_3> objectVolumes, std::vector<std::vector<double>> splitWorkspace){
     std::vector<int> sliceVolumes;
     for(auto slice : objectVolumes){
         sliceVolumes.push_back(findVolumeIndex(&slice, &splitWorkspace));
@@ -230,6 +233,25 @@ int ObstacleManager::findVolumeIndex(const Polyhedron_3& slice, const std::vecto
 
     // If no volume matches, return -1 (indicating an error)
     return -1;
+}
+
+std::vector<double> ObstacleManager::samplingProbability(){
+    double distanceWeight;
+    double pwCoefficent;
+    std::vector<double> probabilities;
+    double probSum = 0.0;
+    for(int i = 0; i < 26; i++){
+        distanceWeight = (1.0/(4.0*sqrt(2*M_PI))) * exp(-(pow(stepsToEnd.at(i), 2)/32.0));
+        pwCoefficent = this->volumes.at(i) * distanceWeight;
+        probSum += pwCoefficent;
+        probabilities.push_back(pwCoefficent);
+    }
+    
+    for(int i = 0; i < 26; i++){
+        probabilities.at(i) = (probabilities.at(i)/probSum);
+    }
+
+    return probabilities;
 }
 
 void ObstacleManager::visualizeSpheres(std::vector<std::vector<Point_3>> objectSpheres){

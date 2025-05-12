@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.0.2)
 project(collision_avoid)
 
 
-find_package(CGAL REQUIRED)
+find_package(CGAL CONFIG REQUIRED)
+target_link_libraries("${PROJECT_NAME}" CGAL::CGAL)
 
-include_directories(
-# include
-  ${CGAL_INCLUDE_DIRS}
-)
+
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

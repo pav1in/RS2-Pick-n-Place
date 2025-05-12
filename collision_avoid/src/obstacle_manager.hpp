@@ -31,10 +31,11 @@ class ObstacleManager {
         void visualizeSpheres(std::vector<std::vector<Point_3>> objectSpheres);
         void setWorkspaceCorners(std::vector<double> workspaceCorners);
         std::vector<double> getWorkspaceCorners();
-        std::vector<Plane> defineWorkspacePlanes(std::vector<double> workspaceCorners);
-        std::vector<Polyhedron_3> workspaceSplit(Polyhedron_3 P, std::vector<Plane> planes);
+        std::vector<Plane> defineWorkspacePlanes();
+        std::vector<Polyhedron_3> workspaceSplit(Polyhedron_3 P);
         std::vector<std::vector<double>> defineWorkspaceSplit();
-        std::vector<double> calculateFreeVolumes(std::vector<Polyhedron_3> objectVolumes, std::vector<std::vector<double>> splitWorkspace);
+        void calculateFreeVolumes(std::vector<Polyhedron_3> objectVolumes, std::vector<std::vector<double>> splitWorkspace);
+        std::vector<double> ObstacleManager::samplingProbability();
 
 
     private:
@@ -43,6 +44,10 @@ class ObstacleManager {
         std::vector<std::vector<double>> workspaceCorners;
         std::vector<Plane> workspacePlanes;
         double cellVolume;
+        std::vector<double> volumes;
+        std::vector<double> stepsToEnd = {6, 5, 4, 5, 4, 3, 4, 3, 2,
+                                          5, 4, 3, 4, 3, 2, 3, 2, 1,
+                                          4, 3, 2, 3, 2, 1, 2, 1, 0};
 }; 
 
 #endif // OBJ_H
