@@ -134,6 +134,11 @@ std::vector<std::vector<double>> ObstacleManager::defineWorkspaceSplit() {
     return splitWorkspace;
 }
 
+
+
+
+// Create a way to split workspace using cubes 
+
 std::vector<Plane> ObstacleManager::defineWorkspacePlanes(std::vector<std::vector<double>> workspacePoints) {
     std::vector<Plane> planes;
 
