@@ -8,14 +8,14 @@ class RG2SocketDriver:
     def __init__(self):
         rospy.init_node('rg2_socket_driver', anonymous=True)
 
-        self.robot_ip = rospy.get_param("~robot_ip", "192.168.0.194")  # Update if needed
-        self.port = 30002  # Match your URCap socket config
+        self.robot_ip = rospy.get_param("~robot_ip", "192.168.0.194") 
+        self.port = 30002  #50002 not working
         self.sock = None
 
         rospy.Service('rg2_grip', Trigger, self.handle_grip)
         rospy.Service('rg2_release', Trigger, self.handle_release)
 
-        rospy.loginfo("🔌 RG2 Gripper Socket Driver is ready.")
+        rospy.loginfo("RG2 Gripper Socket Driver is ready.")
 
     def connect(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,16 +36,16 @@ class RG2SocketDriver:
 
             self.sock.shutdown(socket.SHUT_RDWR)
             self.disconnect()
-            return True, "✅ Command sent"
+            return True, "Command sent"
         except socket.timeout:
-            rospy.logwarn("⏳ Timeout: Robot did not accept the connection in time. Dropping packet.")
+            rospy.logwarn("imeout: Robot did not accept the connection in time. Dropping packet.")
             return False, "Timeout – robot did not respond"
         except Exception as e:
-            rospy.logerr(f"❌ Socket send failed: {e}")
+            rospy.logerr(f"Socket send failed: {e}")
             return False, str(e)
 
     def handle_grip(self, req):
-        script = 'rg_grip(50, 40, 0, True, False)'
+        script = 'rg_grip(30, 40, 0, True, False)'
         return TriggerResponse(*self.send_script(script))
 
     def handle_release(self, req):
