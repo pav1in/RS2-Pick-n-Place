@@ -5,7 +5,8 @@ from std_msgs.msg import Float64
 
 class GripperController:
     def __init__(self):
-        self.max_effort_limit = 2.2  # Adjust?
+        #! In ur3_gripper_sim.launch
+        self.max_effort_limit = rospy.get_param("~max_effort_limit", 2.2) 
         self.command_sent = False
 
         rospy.loginfo("Gripper force limiter node started")

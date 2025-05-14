@@ -31,4 +31,10 @@
   <group if ="$(arg position_controller)">
     <include file="$(find ur3_gripper_sim)/launch/position_controllers.launch" />
   </group>
+
+  <!-- ADJUST max force -->
+  <node name="gripper_force_limiter" pkg="ur3_gripper_sim" type="gripper_force_limiter.py" output="screen">
+    <param name="max_effort_limit" value="2.2" />
+  </node>
+
 </launch>
