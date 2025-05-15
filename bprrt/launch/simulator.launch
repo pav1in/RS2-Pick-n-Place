@@ -13,7 +13,7 @@
     <arg name="sim" value="true"/>
   </include>
 
-  <!-- 3) Spawn 5 random boxes -->
+  <!-- 3) Spawn 1 random boxes -->
   <node pkg="bprrt" type="box_spawner_node" name="box_spawner" output="screen"/>
 
   <!-- 4) Track those boxes -->

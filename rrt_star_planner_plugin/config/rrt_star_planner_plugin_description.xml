@@ -1,7 +1,0 @@
-<library path="lib/librrt_star_planner_plugin">
-  <class name="rrt_star_planner_plugin/RRTStarPlannerManager"
-         type="rrt_star_planner_plugin::RRTStarPlannerManager"
-         base_class_type="planning_interface::PlannerManager">
-    <description>Custom RRT* planner plugin</description>
-  </class>
-</library>

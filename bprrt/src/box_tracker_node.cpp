@@ -1,12 +1,11 @@
-#include <ros/ros.h>
-#include "boxtracker.h"
+#include "bprrt/boxtracker.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "box_tracker_node");
-  ros::NodeHandle nh;
-
-  BoxTracker tracker(nh);
-  ros::spin();
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<BoxTracker>();
+  rclcpp::spin(node);
+  rclcpp::shutdown();
   return 0;
 }
