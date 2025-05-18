@@ -47,99 +47,50 @@ cd ~/git/RS2-Pick-n-Place
 git checkout Perception
 ```
 
-####Symlink only the yolov8_object_detector package into your ROS 2 workspace:
+### 2. Symlink only the yolov8_object_detector package into your ROS 2 workspace:
 ```bash
 cd ~/ros2_ws/src
 ln -s ~/git/RS2-Pick-n-Place/yolov8_object_detector yolov8_object_detector
 ```
 If you switch branches, remove the symlink before linking a different version.
 
-2. Install Required Python Packages
-bash
-Copy
-Edit
+### 3. Install Required Python Packages
+```bash
 pip3 install --user ultralytics onnx onnxruntime ros2_numpy opencv-python
-3. Install Required ROS 2 Packages
-bash
-Copy
-Edit
+```
+### 4. Install Required ROS 2 Packages
+```bash
 sudo apt update
 sudo apt install ros-humble-cv-bridge ros-humble-tf-transformations
 sudo apt install ros-humble-librealsense2* ros-humble-realsense2-camera
-4. Install and Configure the RealSense ROS 2 Wrapper
-bash
-Copy
-Edit
-sudo usermod -a -G dialout $USER
-wget -O ~/99-realsense.rules https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules
-sudo mv ~/99-realsense.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules && sudo udevadm trigger
-Note: You may need to log out and back in for group permissions to take effect.
-
-5. Build and Source the Workspace
-bash
-Copy
-Edit
-cd ~/ros2_ws
-colcon build --symlink-install --packages-select yolov8_object_detector
-source install/setup.bash
-yaml
-Copy
-Edit
-
----
-
-Just copy and paste the section above directly into your README.md!  
-If you want it **without the outer code block** (just raw markdown), here it is again:
-
----
-
-## Installation and Setup
-
-### 1. Switch to the Perception Branch
-
-```bash
-cd ~/git/RS2-Pick-n-Place
-git checkout Perception
 ```
 
-Symlink only the yolov8_object_detector package into your ROS 2 workspace:
-
-bash
-Copy
-Edit
-cd ~/ros2_ws/src
-ln -s ~/git/RS2-Pick-n-Place/yolov8_object_detector yolov8_object_detector
-If you switch branches, remove the symlink before linking a different version.
-
-2. Install Required Python Packages
-bash
-Copy
-Edit
-pip3 install --user ultralytics onnx onnxruntime ros2_numpy opencv-python
-3. Install Required ROS 2 Packages
-bash
-Copy
-Edit
-sudo apt update
-sudo apt install ros-humble-cv-bridge ros-humble-tf-transformations
-sudo apt install ros-humble-librealsense2* ros-humble-realsense2-camera
-4. Install and Configure the RealSense ROS 2 Wrapper
-bash
-Copy
-Edit
+### 5. Install and Configure the RealSense ROS 2 Wrapper
+```bash
 sudo usermod -a -G dialout $USER
 wget -O ~/99-realsense.rules https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules
 sudo mv ~/99-realsense.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules && sudo udevadm trigger
+```
 Note: You may need to log out and back in for group permissions to take effect.
 
-5. Build and Source the Workspace
-bash
-Copy
-Edit
-cd ~/ros2_ws
-colcon build --symlink-install --packages-select yolov8_object_detector
-source install/setup.bash
+---
+## Subsystem Demonstration in Real Life
 
+### 1.	In Terminal A, launch the real sense node
+```bash
+ros2 launch realsense2_camera rs_launch.py \
+  align_depth.enable:=true \
+  pointcloud.enable:=true \
+  depth_module.profile:=640x480x30
+```
+
+### 2.	In Terminal B, Run the YOLOv8 Object Detector Node
+```bash
+cd ~/ros2_ws
+colcon build --symlink-install yolov8_object_detector
+source install/setup.bash	
+ros2 run yolov8_object_detector object_detector
+```
+---
 
