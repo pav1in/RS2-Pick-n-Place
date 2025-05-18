@@ -42,19 +42,17 @@ Outputs 3D poses and segmented point clouds for downstream manipulation and plan
 ## Installation and Setup
 
 ### 1. Switch to the Perception Branch
-
-```markdown
 ```bash
 cd ~/git/RS2-Pick-n-Place
 git checkout Perception
+```
 
-
-Symlink only the yolov8_object_detector package into your ROS 2 workspace:
+####Symlink only the yolov8_object_detector package into your ROS 2 workspace:
 ```bash
 cd ~/ros2_ws/src
 ln -s ~/git/RS2-Pick-n-Place/yolov8_object_detector yolov8_object_detector
+```
 If you switch branches, remove the symlink before linking a different version.
-```bash
 
 2. Install Required Python Packages
 bash
@@ -99,12 +97,6 @@ If you want it **without the outer code block** (just raw markdown), here it is 
 ## Installation and Setup
 
 ### 1. Switch to the Perception Branch
-
-**This will render as:**
-
-```bash
-# your commands here
-echo "Hello, world!"
 
 ```bash
 cd ~/git/RS2-Pick-n-Place
