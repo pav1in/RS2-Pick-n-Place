@@ -103,6 +103,8 @@ If you want it **without the outer code block** (just raw markdown), here it is 
 ```bash
 cd ~/git/RS2-Pick-n-Place
 git checkout Perception
+```
+
 Symlink only the yolov8_object_detector package into your ROS 2 workspace:
 
 bash
@@ -141,3 +143,5 @@ Edit
 cd ~/ros2_ws
 colcon build --symlink-install --packages-select yolov8_object_detector
 source install/setup.bash
+
+
