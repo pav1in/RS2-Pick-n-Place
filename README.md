@@ -43,10 +43,11 @@ Outputs 3D poses and segmented point clouds for downstream manipulation and plan
 
 ### 1. Switch to the Perception Branch
 
+```markdown
 ```bash
 cd ~/git/RS2-Pick-n-Place
 git checkout Perception
-```bash
+
 
 Symlink only the yolov8_object_detector package into your ROS 2 workspace:
 ```bash
