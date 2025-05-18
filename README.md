@@ -46,14 +46,14 @@ Outputs 3D poses and segmented point clouds for downstream manipulation and plan
 ```bash
 cd ~/git/RS2-Pick-n-Place
 git checkout Perception
-Symlink only the yolov8_object_detector package into your ROS 2 workspace:
+```bash
 
-bash
-Copy
-Edit
+Symlink only the yolov8_object_detector package into your ROS 2 workspace:
+```bash
 cd ~/ros2_ws/src
 ln -s ~/git/RS2-Pick-n-Place/yolov8_object_detector yolov8_object_detector
 If you switch branches, remove the symlink before linking a different version.
+```bash
 
 2. Install Required Python Packages
 bash
