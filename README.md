@@ -100,6 +100,12 @@ If you want it **without the outer code block** (just raw markdown), here it is 
 
 ### 1. Switch to the Perception Branch
 
+**This will render as:**
+
+```bash
+# your commands here
+echo "Hello, world!"
+
 ```bash
 cd ~/git/RS2-Pick-n-Place
 git checkout Perception
