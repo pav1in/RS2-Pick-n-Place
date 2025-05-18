@@ -1,4 +1,8 @@
 # WELCOME TO PICK N PLACE UR3e COBOT!
+---
+## Table of Contents
+
+- [Installation](#installation)
 
 ---
 ## Installation
