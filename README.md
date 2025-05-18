@@ -1,7 +1,9 @@
 # WELCOME TO PICK N PLACE UR3e COBOT!
 
 ---
-## Setting up Ubuntu 20.04 ROS 1 Software
+## Installation
+
+### Setting up Ubuntu 20.04 ROS 1 Software
 Follow these steps on a clean Ubuntu 22.04 / ROS 2 Humble machine.
 Skip any steps that you have already completed. Afterward, proceed to the subsystem setup for specific configurations.
 
@@ -44,7 +46,7 @@ source install/setup.bash
 ```
 ---
 
-## Fetch and Install Core Robotics Repositories
+### Fetch and Install Core Robotics Repositories
 
 1. Clone the necessary driver and description repositories (use humble branches for ROS 2) to ~/ros2_ws/src
 ```bash
@@ -71,7 +73,7 @@ git clone -b humble https://github.com/ros-controls/ros2_control.git
 git clone -b humble https://github.com/ros-controls/ros2_controllers.git
 ```
 ---
-## Install GUI and Joint Control Tools
+### Install GUI and Joint Control Tools
 1. Handy GUI for testing joints:
 ```bash
 sudo apt update
