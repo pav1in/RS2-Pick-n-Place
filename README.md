@@ -3,12 +3,23 @@
 This branch provides a real-time perception pipeline for robotic pick-and-place, combining an Intel RealSense RGB-D camera with YOLOv8 object detection in ROS 2.  
 It publishes 2D and 3D object localization, segmented point clouds, and live visualization topics for integration with downstream planning and manipulation subsystems.
 
+## Purpose
+
+Detect and localize objects in real time using YOLOv8 and an Intel RealSense camera.  
+Outputs 3D poses and segmented point clouds for downstream manipulation and planning.
+
+
+<video controls width="640" loop>
+  <source src="Videos/Subsystem_Preception_Demonstration.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ---
 
 ## Table of Contents
 
-- [Hardware](#hardware)
 - [Purpose](#purpose)
+- [Hardware](#hardware)
 - [Key Topics](#key-topics)
 - [Installation and Setup](#installation-and-setup)
 - [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)
@@ -23,15 +34,6 @@ It publishes 2D and 3D object localization, segmented point clouds, and live vis
 | 2   | Camera   | Articulated tripod / desk stand          | 1   | Allows strategic positioning                   | Refer to (Intel RealSense, 2025)       |
 | 3   | Camera   | USB-C to USB-A 3.0 cable                 | 1   | To connect camera to computer                  | Refer to (Intel RealSense, 2025)       |
 | 4   | Camera   | Calibration checkerboard (8×6, 20 mm)    | 1   | Eye-to-hand extrinsic calibration              | 8×6 inner corners, 20 mm squares       |
-
-
-
----
-
-## Purpose
-
-Detect and localize objects in real time using YOLOv8 and an Intel RealSense camera.  
-Outputs 3D poses and segmented point clouds for downstream manipulation and planning.
 
 ---
 
