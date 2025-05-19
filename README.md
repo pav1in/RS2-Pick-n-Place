@@ -110,13 +110,13 @@ ros2 run yolov8_object_detector object_detector
 
 ### 1. Experiencing USB Permission Issues?
 
-| Step | Command / Action                                                                                                                                                                                                            | Description                                                                  |
-|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| 1    | ```bash<br>sudo usermod -a -G dialout $USER<br>```                                                                                                                                                                          | Add your user to the dialout group to grant serial and USB device access.    |
-| 2    | ```bash<br>sudo reboot<br>```                                                                                                                                                                                               | Logout/login or reboot (especially on WSL or VM) to apply group changes.     |
-| 3    | ```bash<br>sudo wget -O /etc/udev/rules.d/99-realsense-libusb.rules \  
-https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules<br>```                                                       | Download and install Intel RealSense udev rules so camera permissions load automatically. |
-| 4    | ```bash<br>sudo udevadm control --reload-rules && sudo udevadm trigger<br>```                                                                                                                                                | Reload udev rules and trigger them immediately.                              |
+| Step | Command / Action                                                                                                                                                                                                                                                     | Description                                                                  |
+|------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| 1    | ```bash<br>sudo usermod -a -G dialout $USER<br>```                                                                                                                                                                                                                     | Add your user to the dialout group to grant serial and USB device access.    |
+| 2    | ```bash<br>sudo reboot<br>```                                                                                                                                                                                                                                          | Logout/login or reboot (especially on WSL or VM) to apply group changes.     |
+| 3    | ```bash<br>sudo wget -O /etc/udev/rules.d/99-realsense-libusb.rules https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules<br>```                                       | Download and install Intel RealSense udev rules so camera permissions load automatically. |
+| 4    | ```bash<br>sudo udevadm control --reload-rules && sudo udevadm trigger<br>```                                                                                                                                                                                           | Reload udev rules and trigger them immediately.                              |
+
 
 ---
 
