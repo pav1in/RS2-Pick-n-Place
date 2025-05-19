@@ -1,8 +1,21 @@
 # Subsystem Setup – Gripper – ROS2
 
+![Gripper Demo](videos/gripper.gif)
+
+## 📑 Table of Contents
+
+- [Purpose](#purpose)  
+- [Key Topics](#key-topics)  
+- [Installation and Setup](#installation-and-setup)  
+- [Hardware Setup](#hardware-setup)  
+- [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)  
+
+---
+
 ## Purpose
 
 The gripper subsystem enables the robot to pick up and manipulate objects reliably by integrating and controlling the OnRobot RG2 gripper with the UR3e robot arm in ROS 2.
+
 ---
 
 ## Key Topics
