@@ -30,7 +30,6 @@
   - [Simulation Demo](#simulation-demo)
   - [Real-life Demo](#real-life-demo-1)
   - [Configurable Settings](#configurable-settings)
-- [License](#license)
 
 ---
 
