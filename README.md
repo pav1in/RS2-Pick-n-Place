@@ -7,12 +7,12 @@ It publishes 2D and 3D object localization, segmented point clouds, and live vis
 
 ## Table of Contents
 
+- [Hardware](#hardware)
 - [Purpose](#purpose)
 - [Key Topics](#key-topics)
 - [Installation and Setup](#installation-and-setup)
-- [Subsystem Demonstration (Real Hardware)](#subsystem-demonstration-real-hardware)
-- [RViz Visualization Topics](#rviz-visualization-topics)
-- [Troubleshooting](#troubleshooting)
+- [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)
+- [Troubleshooting & FAQs](#troubleshooting--faqs)
 
 ---
 ## Hardware
