@@ -43,6 +43,7 @@
 - Python 3.8+  
 
 ---
+---
 
 ## Appendix A – Ubuntu 20.04 & ROS Noetic
 
@@ -197,7 +198,6 @@ pip3 install ultralytics
 ```
 Convert your YOLOv8 .pt to ONNX once, then place in your package’s models/ folder.
 
----
 ## Simulation
 ```bash
 cd ~/catkin_ws
@@ -207,7 +207,6 @@ roslaunch ur3e_simulation ur3e_simulation.launch
 rosrun rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 rosrun yolov8_detector_py yolov8_simulation.py
 ```
----
 
 ## Real-life Demo
 ```bash
@@ -236,7 +235,6 @@ rosrun yolov8_detector_py yolov8_pose_detector.py
 | Publish     | `/gripper_force_estimate`                     | Estimated closing force (Nm)          |
 | Publish     | `/ur_hardware_interface/set_io`               | Digital outputs for grip/release      |
 
----
 ## Simulation Demo
 ```bash
 cd ~/catkin_ws
@@ -290,5 +288,5 @@ rosservice call /ur_hardware_interface/set_io "{fun:1, pin:1, state:1}"
 | Finger joint limits              | `ur3_gripper.urdf.xacro`                           | `-0.45 → 1.57 rad` | Min/max finger spread                     |
 | Finger speed                     | `ur3_gripper.urdf.xacro`                           | `3.14 rad/s`       | Max closing speed                         |
 
-
+---
 
