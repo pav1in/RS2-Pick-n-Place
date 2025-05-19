@@ -67,68 +67,84 @@ source ~/.bashrc
 ```
 
 ### 3. Clone the Project
+```bash
 mkdir -p ~/git
 cd ~/git
 git clone git@github.com:pav1in/RS2-Pick-n-Place.git
 cd RS2-Pick-n-Place
-git checkout ros1
+git checkout ROS1
+```
 ### 4. Link & Build
-
+```bash
 cd ~/catkin_ws/src
 ln -s ~/git/RS2-Pick-n-Place RS2-Pick-n-Place
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
+```
 ### 5. Fetch UR Packages
-
+```bash
 cd ~/catkin_ws/src
 git clone https://github.com/ros-industrial/universal_robot.git
 git clone https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
-### 6. Install RQT Trajectory Plugin
+```
 
+### 6. Install RQT Trajectory Plugin
+```bash
 sudo apt update
 sudo apt install ros-noetic-rqt ros-noetic-rqt-joint-trajectory-controller
-### 7. Resolve Dependencies & Build
+```
 
+### 7. Resolve Dependencies & Build
+```bash
 cd ~/catkin_ws
 rosdep install --from-paths src --ignore-src -r -y
 catkin_make
 source devel/setup.bash
-
+```
+---
 ## Appendix B – Perception Subsystem
-Purpose
-Detects and classifies objects on the conveyor belt in real time using YOLOv8
 
-Converts 2D detections to metric 3D poses using depth data and camera intrinsics
+### Purpose
+- Detects and classifies objects on the conveyor belt in real time using YOLOv8
+- Converts 2D detections to metric 3D poses using depth data and camera intrinsics
+- Publishes the filtered point cloud for collision layers and grasp planning
+- Provides a single source of truth via ROS topics
 
-Publishes the filtered point cloud for collision layers and grasp planning
+### Key ROS Topics
 
-Provides a single source of truth via ROS topics
+| Direction   | Topic                                        | Purpose                                        |
+|-------------|----------------------------------------------|------------------------------------------------|
+| Subscribe   | `/camera/color/camera_info`                  | Intrinsics & distortion parameters             |
+| Subscribe   | `/camera/color/image_raw`                    | 640×480 BGR frame for YOLOv8 detection         |
+| Subscribe   | `/camera/aligned_depth_to_color/image_raw`   | Depth image aligned to color                   |
+| Subscribe   | `/camera/depth/color/points`                 | Raw pointcloud for ROI segmentation            |
+| Publish     | `/detected_object_pose`                      | 6-DoF pose of each detected object             |
+| Publish     | `/segmented_roi`                             | Pointcloud cropped to YOLO bounding boxes      |
+| Publish     | `/roi_marker`                                | RViz marker showing each detected pose         |
 
-Key ROS Topics
-Direction	Topic	Purpose
-Subscribe	/camera/color/camera_info	Intrinsics & distortion parameters
-Subscribe	/camera/color/image_raw	640×480 BGR frame for YOLOv8 detection
-Subscribe	/camera/aligned_depth_to_color/image_raw	Depth image aligned to color
-Subscribe	/camera/depth/color/points	Raw pointcloud for ROI segmentation
-Publish	/detected_object_pose	6-DoF pose of each detected object
-Publish	/segmented_roi	Pointcloud cropped to YOLO bounding boxes
-Publish	/roi_marker	RViz marker showing each detected pose
 
-SDK & ROS Wrapper
+### SDK & ROS Wrapper
 
-# 1. Add RealSense key & repo
+#### 1. Add RealSense key & repo
+```bash
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 6F3EFCDE
 sudo add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo bionic main" -u
 sudo apt-get update
+```
 
-# 2. Install librealsense2
+#### 2. Install librealsense2
+```bash
 sudo apt-get install librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg
+```
 
-# 3. Verify installation
+#### 3. Verify installation
+```bash
 realsense-viewer
+```
 
-# 4. Clone & build ROS wrapper
+#### 4. Clone & build ROS wrapper
+```bash
 cd ~/catkin_ws/src
 git clone https://github.com/IntelRealSense/realsense-ros.git
 cd ~/catkin_ws
@@ -136,7 +152,9 @@ rosdep install --from-paths src --ignore-src -r -y
 catkin_make
 source devel/setup.bash
 OpenCV 4.6.0
+```
 
+```bash
 cd ~
 git clone https://github.com/opencv/opencv.git
 git clone https://github.com/opencv/opencv_contrib.git
@@ -151,14 +169,18 @@ make -j$(nproc)
 sudo make install
 sudo ldconfig
 pkg-config --modversion opencv4  # expect 4.6.0
+```
 
-# Update environment variables
+#### Update environment variables
+```bash
 echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bashrc
 echo 'export CMAKE_PREFIX_PATH=/usr/local:$CMAKE_PREFIX_PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
 source ~/.bashrc
+```
 
-# Rebuild CV Bridge for Noetic
+#### Rebuild CV Bridge for Noetic
+```bash
 cd ~/catkin_ws/src
 git clone https://github.com/ros-perception/vision_opencv.git
 cd vision_opencv && git checkout -b noetic origin/noetic
@@ -166,79 +188,107 @@ cd ~/catkin_ws
 catkin_make clean
 catkin_make
 source devel/setup.bash
+```
 
-#YOLOv8 (ONNX)
+#### YOLOv8 (ONNX)
+```bash
 sudo apt install python3-pip
 pip3 install ultralytics
-# Convert your YOLOv8 .pt to ONNX once, then place in your package’s models/ folder.
+```
+Convert your YOLOv8 .pt to ONNX once, then place in your package’s models/ folder.
 
-#Simulation
-
+---
+## Simulation
+```bash
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
 roslaunch ur3e_simulation ur3e_simulation.launch
 rosrun rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 rosrun yolov8_detector_py yolov8_simulation.py
+```
+---
 
-# Real-life Demo
+## Real-life Demo
+```bash
 cd ~/catkin_ws
 source devel/setup.bash
 roslaunch realsense2_camera rs_camera.launch serial_no:=317222073555 enable_pointcloud:=true align_depth:=true
 rosrun yolov8_detector_py yolov8_pose_detector.py
+```
+---
 
 ## Appendix C – Gripper Subsystem
-Purpose
-Provides mechanical interface between UR3e & payloads
 
-Executes open/close commands from grasp planner
+### Purpose
+- Provides mechanical interface between UR3e & payloads
+- Executes open/close commands from grasp planner
+- Adaptive finger stroke: 0–110 mm
+- Publishes grip state & force feedback
 
-Adaptive finger stroke: 0–110 mm
+### Key ROS Topics
 
-Publishes grip state & force feedback
+| Direction   | Topic                                         | Purpose                               |
+|-------------|-----------------------------------------------|---------------------------------------|
+| Subscribe   | `/joint_states`                               | Arm & gripper position, velocity, effort |
+| Subscribe   | `/gripper_joint_position/command`             | Target finger position                |
+| Subscribe   | `/eff_joint_traj_controller/command`          | Homing & reposition commands          |
+| Publish     | `/gripper_force_estimate`                     | Estimated closing force (Nm)          |
+| Publish     | `/ur_hardware_interface/set_io`               | Digital outputs for grip/release      |
 
-Key ROS Topics
-Direction	Topic	Purpose
-Subscribe	/joint_states	Arm & gripper position, velocity, effort
-Subscribe	/gripper_joint_position/command	Target finger position
-Subscribe	/eff_joint_traj_controller/command	Homing & reposition commands
-Publish	/gripper_force_estimate	Estimated closing force (Nm)
-Publish	/ur_hardware_interface/set_io	Digital outputs for grip/release
-
+---
 ## Simulation Demo
-
+```bash
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
 roslaunch ur3e_simulation ur3e_simulation.launch
 roslaunch ur3_gripper_sim ur3_gripper_sim.launch
-# Open gripper
+```
+
+### Open gripper
+```bash
 rostopic pub /gripper_joint_position/command std_msgs/Float64 "data: -0.5" --once
-# Close gripper
+```
+
+###  Close gripper
+```bash
 rostopic pub /gripper_joint_position/command std_msgs/Float64 "data: 0.0" --once
-# Safety monitors
+```
+
+### Safety monitors
+```bash
 rosrun ur3_gripper_sim gripper_effort_monitor.py
 rosrun ur3_gripper_sim gripper_force_limiter.py
-Real-life Demo
-bash
-Copy
-Edit
-# Install RG2 URCap on teach pendant
-# Mount gripper on UR3e
-# Pendant: Installation → Tool: DO0=Grip, DO1=Release; Run → Program Tree → URCaps → External Control Node
+```
+
+## Real-life Demo
+
+1. Install RG2 URCap on teach pendant
+2. Mount gripper on UR3e
+3. Pendant: Installation → Tool: DO0=Grip, DO1=Release; Run → Program Tree → URCaps → External Control Node
+```bash
 roslaunch ur_robot_driver ur3e_bringup.launch robot_ip:=192.168.0.101
-# Grip
+```
+4. Grip
+```bash
 rosservice call /ur_hardware_interface/set_io "{fun:1, pin:0, state:1}"
-# Release
+```
+5. Release
+```bash
 rosservice call /ur_hardware_interface/set_io "{fun:1, pin:1, state:1}"
-Configurable Settings
-Setting	File/Location	Default	Description
-Finger PID (position)	ur3_gripper_sim/config/position_controller.yaml	p:5.0, i:0.0, d:0.0	Finger stiffness
-Physics PID	config/gazebo_controller.yaml	p:1.0, i:0.0, d:0.0	Gazebo control loop gains
-Integral clamp & anti-windup	gazebo_controller.yaml	i_clamp:0.2	Prevent integrator wind-up
-Max effort limit	gripper_force_limiter.py	2.2 Nm	Safety torque limit
-Reset threshold	gripper_effort_monitor.py	<0.1 Nm	Effort below which limiter re-arms
-Finger joint limits	ur3_gripper.urdf.xacro	-0.45 → 1.57 rad	Min/max finger spread
-Finger speed	ur3_gripper.urdf.xacro	3.14 rad/s	Max closing speed
+```
+## Configurable Settings
+
+| Setting                          | File/Location                                      | Default            | Description                               |
+|----------------------------------|----------------------------------------------------|--------------------|-------------------------------------------|
+| Finger PID (position)            | `ur3_gripper_sim/config/position_controller.yaml`  | `p:5.0, i:0.0, d:0.0` | Finger position stiffness                 |
+| Physics PID                      | `config/gazebo_controller.yaml`                    | `p:1.0, i:0.0, d:0.0` | Gazebo control loop gains                |
+| Integral clamp & anti-windup     | `gazebo_controller.yaml`                           | `i_clamp:0.2`      | Prevent integrator wind-up                |
+| Max effort limit                 | `gripper_force_limiter.py`                         | `2.2 Nm`           | Safety torque limit                       |
+| Reset threshold                  | `gripper_effort_monitor.py`                        | `< 0.1 Nm`         | Effort below which limiter re-arms        |
+| Finger joint limits              | `ur3_gripper.urdf.xacro`                           | `-0.45 → 1.57 rad` | Min/max finger spread                     |
+| Finger speed                     | `ur3_gripper.urdf.xacro`                           | `3.14 rad/s`       | Max closing speed                         |
+
 
 
