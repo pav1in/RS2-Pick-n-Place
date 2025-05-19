@@ -9,10 +9,7 @@ Detect and localize objects in real time using YOLOv8 and an Intel RealSense cam
 Outputs 3D poses and segmented point clouds for downstream manipulation and planning.
 
 
-<video controls width="640" loop>
-  <source src="Videos/Subsystem_Preception_Demonstration.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Perception Subsystem Demo](videos/preception_ROS_2.gif)
 
 ---
 
