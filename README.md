@@ -7,7 +7,7 @@
 ---
 ## Installation
 
-### Setting up Ubuntu 20.04 ROS 1 Software
+### Setting up Ubuntu 22.04 ROS 2 Software
 Follow these steps on a clean Ubuntu 22.04 / ROS 2 Humble machine.
 Skip any steps that you have already completed. Afterward, proceed to the subsystem setup for specific configurations.
 
