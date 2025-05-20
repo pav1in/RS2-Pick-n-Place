@@ -9,7 +9,7 @@ This branch provides a calculation library for use with the trajectory subsystem
 - [Purpose](#purpose)
 - [Installation and Setup](#installation-and-setup)
 
-
+---
 
 ## Purpose
 
