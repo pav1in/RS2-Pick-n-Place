@@ -2,14 +2,14 @@
 
 This branch provides a calculation library for use with the trajectory subsystem, also providing an example test use case. 
 
----
+
 
 ## Table of Contents
 
 - [Purpose](#purpose)
 - [Installation and Setup](#installation-and-setup)
 
----
+
 
 ## Purpose
 
