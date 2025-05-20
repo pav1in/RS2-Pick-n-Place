@@ -2,16 +2,18 @@
 
 This branch provides a calculation library for use with the trajectory subsystem, also providing an example test use case. 
 
-## Purpose
-
-Collect object data into a 27-cell "workspace" in order to calculate probabilities to influence the trajectory planning's algorithm.
-
 ---
 
 ## Table of Contents
 
 - [Purpose](#purpose)
 - [Installation and Setup](#installation-and-setup)
+
+---
+
+## Purpose
+
+Collect object data into a 27-cell "workspace" in order to calculate probabilities to influence the trajectory planning's algorithm.
 
 ---
 
