@@ -4,7 +4,7 @@ This branch provides a calculation library for use with the trajectory subsystem
 
 ## Purpose
 
-Collect object data into a 27-cell "workspace" in order to calculate weightings to influence the trajectory planning's algorithm.
+Collect object data into a 27-cell "workspace" in order to calculate probabilities to influence the trajectory planning's algorithm.
 
 ---
 
