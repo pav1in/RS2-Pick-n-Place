@@ -20,7 +20,11 @@ Outputs 3D poses and segmented point clouds for downstream manipulation and plan
 - [Key Topics](#key-topics)
 - [Installation and Setup](#installation-and-setup)
 - [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)
+- [Testing](#Testing)
+- [Configurable Settings](#Configurable-Settings)
 - [Troubleshooting & FAQs](#troubleshooting--faqs)
+
+
 
 ---
 ## Hardware
@@ -134,6 +138,84 @@ cd ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
 4. **Review Results** 
 Annotated outputs (*_det.jpg) and printed counts will appear in results/.
 You can tweak --conf and --iou to see how confidence and NMS thresholds affect detections.
+
+---
+
+## Configurable Settings
+
+## How to train models using YOLOv8
+
+1. Create a folder structure like this anywhere in your Ubuntu system
+yolov8_retrain/
+├── images/
+│   ├── train/
+│   │   ├── cube_001.jpg
+│   │   ├── cylinder_001.jpg
+│   │   └── …
+│   └── val/
+│       ├── cube_201.jpg
+│       ├── cylinder_201.jpg
+│       └── …
+└── labels/
+    ├── train/
+    │   ├── cube_001.txt
+    │   ├── cylinder_001.txt
+    │   └── …
+    └── val/
+        ├── cube_201.txt
+        ├── cylinder_201.txt
+        └── …
+└── data.yaml
+
+2.	Pasting in the pictures
+Split 80/20: put ~80% of your images in train/ and ~20% in val/
+
+3. Install LabelImg if you haven’t already
+```bash
+pip3 install labelImg
+```
+
+4. Launch it
+```bash
+labelImg
+```
+5. Open your images/train/ folder, set the save directory to labels/train/, switch to “YOLO” format, and draw bounding boxes around each object, choosing the correct class name (cube or cylinder).
+
+6. Repeat for images/val/ → labels/val/.
+
+7. At the root of yolov8_retrain/, make a file data.yaml
+```Bash
+# data.yaml
+train: images/train
+val:   images/val
+
+nc: 2
+names: ['cube', 'cylinder']
+```
+
+8. From inside yolov8_retrain/
+```bash
+yolo train \
+  model=yolov8n.pt \         # start from tiny-small model; switch to v8s.pt or v8m.pt for more capacity
+  data=data.yaml \
+  epochs=100 \               # increase if loss is still decreasing
+  imgsz=640 \                # image size
+  batch=16 \                 # lower if you run out of GPU/CPU RAM
+  augment=True \             # random flip/mosaic/HSV augmentations
+  name=cube_cyl_retrain      # results will go under runs/train/cube_cyl_retrain
+```
+
+9. Evaluate 
+```bash
+yolo val model=runs/train/cube_cyl_retrain/weights/best.pt data=data.yaml
+```
+
+This will print mAP@0.5, precision, recall.
+
+10. Esport to ONNX/TF if desired (you can use this for your perception node!)
+```bash
+yolo export model=runs/train/cube_cyl_retrain/weights/best.pt format=onnx
+```
 
 ---
 
