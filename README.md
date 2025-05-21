@@ -8,7 +8,8 @@
 - [Key Topics](#key-topics)  
 - [Installation and Setup](#installation-and-setup)  
 - [Hardware Setup](#hardware-setup)  
-- [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)  
+- [Subsystem Demonstration in Real Life](#subsystem-demonstration-in-real-life)
+- [References](#References)
 
 ---
 
@@ -111,4 +112,13 @@ ros2 topic pub --once /finger_width_controller/commands \
   std_msgs/msg/Float64MultiArray "{data: [0.05]}"
 ```
   
+---
+
+## References
+Check out the [RG2 Onrobot Datasheet](https://tech-labs.com/sites/default/files/Datasheet_RG2_v1.4_EN.pdf) for more details.
+Check out the [Series Mounted with OnRobot Grippers](https://github.com/tonydle/UR_OnRobot_ROS2?tab=readme-ov-file) for more details.
+Check out the [RG2 User Manual](https://onrobot.com/sites/default/files/documents/RG2_User%20_Manual_enEN_V1.9.2.pdf) for more details.
+
+
+
 ---
