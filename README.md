@@ -118,7 +118,7 @@ Place any `.jpg/.jpeg/.png` files under: ~/git/RS2-Pick-n-Place/yolov8_object_de
 cd ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
 ./test_detector.py \
   --model ../models/shapes/best.onnx \
-  --input images/ \
+  --input sample/ \
   --output_dir results/ \
   --conf 0.5 \
   --iou 0.45
