@@ -1,7 +1,6 @@
 # Perception Subsystem – ROS 2 (YOLOv8 + RealSense D435 Integration)
 
-This branch provides a real-time perception pipeline for robotic pick-and-place, combining an Intel RealSense RGB-D camera with YOLOv8 object detection in ROS 2.  
-It publishes 2D and 3D object localization, segmented point clouds, and live visualization topics for integration with downstream planning and manipulation subsystems.
+This branch provides a real-time perception pipeline for robotic pick-and-place, combining an Intel RealSense RGB-D camera with YOLOv8 object detection in ROS 2.  It publishes 2D and 3D object localization, segmented point clouds, and live visualization topics for integration with downstream planning and manipulation subsystems.
 
 ## Purpose
 
@@ -23,8 +22,7 @@ Outputs 3D poses and segmented point clouds for downstream manipulation and plan
 - [Testing](#Testing)
 - [Configurable Settings](#Configurable-Settings)
 - [Troubleshooting & FAQs](#troubleshooting--faqs)
-
-
+- [References](#References)
 
 ---
 ## Hardware
@@ -243,5 +241,10 @@ You may see errors or black windows in RViz, `rqt_image_view`, or other OpenCV-b
 | 2    | **Enable Xorg in GDM (if no gear icon)**<br>- Edit `/etc/gdm3/custom.conf` as root.<br>- Uncomment the line:<br>  ```ini<br>  #WaylandEnable=false<br>  ```<br>- Save and reboot.                                                                                                            | Forces GDM to disable Wayland and use Xorg by default.                                                                                                   |
 | 3    | **Verify your session type**<br>```bash<br>echo $XDG_SESSION_TYPE<br>```                                                                                                                                                                                                                       | Should print `x11`. If it prints `wayland`, log out and redo step 1.                                                                                       |
 
-
 ---
+
+## References
+
+Check out the [Intel RealSense](https://www.intelrealsense.com/depth-camera-d435/) for more details.
+
+
