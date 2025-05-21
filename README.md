@@ -110,9 +110,10 @@ ros2 run yolov8_object_detector object_detector
 ### Testing Detections on Static Images
 You can quickly verify YOLOv8’s performance on your own sample images without launching ROS 2.
 
-1. Prepare your test images 
-   Place any `.jpg/.jpeg/.png` files under: ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
-2. Run the offline Detector
+1. **Prepare your test images** 
+Place any `.jpg/.jpeg/.png` files under: ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
+
+2. **Run the offline Detector**
 ```bash
 cd ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
 ./test_detector.py \
@@ -122,14 +123,15 @@ cd ~/git/RS2-Pick-n-Place/yolov8_object_detector/Test
   --conf 0.5 \
   --iou 0.45
 ```
---model: path to your best.onnx
+- model: path to your best.onnx
 
---input: folder of test images
+- input: folder of test images
 
---output_dir: where annotated images will be saved
+- output_dir: where annotated images will be saved
 
---conf / --iou: detection thresholds
-4. Review Results 
+- conf / --iou: detection thresholds
+
+4. **Review Results** 
 Annotated outputs (*_det.jpg) and printed counts will appear in results/.
 You can tweak --conf and --iou to see how confidence and NMS thresholds affect detections.
 
