@@ -115,9 +115,11 @@ ros2 topic pub --once /finger_width_controller/commands \
 ---
 
 ## References
-Check out the [RG2 Onrobot Datasheet](https://tech-labs.com/sites/default/files/Datasheet_RG2_v1.4_EN.pdf) for more details.
-Check out the [Series Mounted with OnRobot Grippers](https://github.com/tonydle/UR_OnRobot_ROS2?tab=readme-ov-file) for more details.
-Check out the [RG2 User Manual](https://onrobot.com/sites/default/files/documents/RG2_User%20_Manual_enEN_V1.9.2.pdf) for more details.
+1. Check out the [RG2 Onrobot Datasheet](https://tech-labs.com/sites/default/files/Datasheet_RG2_v1.4_EN.pdf) for more details.
+
+2. Check out the [Series Mounted with OnRobot Grippers](https://github.com/tonydle/UR_OnRobot_ROS2?tab=readme-ov-file) for more details.
+
+3. Check out the [RG2 User Manual](https://onrobot.com/sites/default/files/documents/RG2_User%20_Manual_enEN_V1.9.2.pdf) for more details.
 
 
 
