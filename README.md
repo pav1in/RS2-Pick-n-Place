@@ -8,7 +8,7 @@ Detect and localize objects in real time using YOLOv8 and an Intel RealSense cam
 Outputs 3D poses and segmented point clouds for downstream manipulation and planning.
 
 
-![Perception Subsystem Demo](videos/preception_ROS_2.gif)
+![Perception Subsystem Demo](references/preception_ROS_2.gif)
 
 ---
 
@@ -144,26 +144,7 @@ You can tweak --conf and --iou to see how confidence and NMS thresholds affect d
 ## How to train models using YOLOv8
 
 1. Create a folder structure like this anywhere in your Ubuntu system
-yolov8_retrain/
-├── images/
-│   ├── train/
-│   │   ├── cube_001.jpg
-│   │   ├── cylinder_001.jpg
-│   │   └── …
-│   └── val/
-│       ├── cube_201.jpg
-│       ├── cylinder_201.jpg
-│       └── …
-└── labels/
-    ├── train/
-    │   ├── cube_001.txt
-    │   ├── cylinder_001.txt
-    │   └── …
-    └── val/
-        ├── cube_201.txt
-        ├── cylinder_201.txt
-        └── …
-└── data.yaml
+![Folder Structure](references/folderStructure.png)
 
 2.	Pasting in the pictures
 Split 80/20: put ~80% of your images in train/ and ~20% in val/
@@ -184,11 +165,11 @@ labelImg
 7. At the root of yolov8_retrain/, make a file data.yaml
 ```Bash
 # data.yaml
-train: images/train
-val:   images/val
+train: images/train # Directory for 100% images
+val:   images/val # Directory for 20% images
 
-nc: 2
-names: ['cube', 'cylinder']
+nc: 2 # Number of Classes
+names: ['cube', 'cylinder'] # Names of the Classes
 ```
 
 8. From inside yolov8_retrain/

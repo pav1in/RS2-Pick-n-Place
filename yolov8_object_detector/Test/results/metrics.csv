@@ -1,0 +1,3 @@
+image,detections,mean_conf_%,time_ms,ram_delta_MB,gpu_delta_MB
+test1.JPG,1,79.96,93.6,12.7,0.0
+test2.JPG,1,75.12,76.6,1.5,0.0
