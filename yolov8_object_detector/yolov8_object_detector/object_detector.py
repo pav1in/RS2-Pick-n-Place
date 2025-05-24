@@ -31,7 +31,7 @@ class YOLOv8ObjectDetector(Node):
 
         # Load YOLOv8 model
         pkg = get_package_share_directory('yolov8_object_detector')
-        default_model = os.path.join(pkg, 'models', 'shapes', 'best.onnx')
+        default_model = os.path.join(pkg, 'models', 'shapes_improved', 'best.onnx')
         self.declare_parameter('model_path', default_model)
         model_path = self.get_parameter('model_path').value
         self.get_logger().info(f"Loading YOLOv8 model from: {model_path}")
@@ -58,14 +58,14 @@ class YOLOv8ObjectDetector(Node):
 
         # CameraInfo subscription
         self.create_subscription(
-            CameraInfo, '/camera/color/camera_info',
+            CameraInfo, '/camera/camera/color/camera_info',
             self.cam_info_cb, 10
         )
 
         # Time‐synced subscribers
-        self.color_sub = Subscriber(self, Image,      '/camera/color/image_raw')
-        self.depth_sub = Subscriber(self, Image,      '/camera/aligned_depth_to_color/image_raw')
-        self.pc_sub    = Subscriber(self, PointCloud2,'/camera/depth/color/points')
+        self.color_sub = Subscriber(self, Image,      '/camera/camera/color/image_raw')
+        self.depth_sub = Subscriber(self, Image,      '/camera/camera/aligned_depth_to_color/image_raw')
+        self.pc_sub    = Subscriber(self, PointCloud2,'/camera/camera/depth/color/points')
         self.ts = ApproximateTimeSynchronizer(
             [self.color_sub, self.depth_sub, self.pc_sub],
             queue_size=10, slop=0.1
@@ -138,7 +138,7 @@ class YOLOv8ObjectDetector(Node):
             x1, y1, x2, y2 = map(int, box)
             u, v = (x1 + x2)//2, (y1 + y2)//2
             Zc = float(self.depth_image[v, u]) * self.depth_scale
-            if not (0.2 < Zc < 2.0):
+            if not (0.01 < Zc < 5.0):
                 continue
 
             # Extract ROI
