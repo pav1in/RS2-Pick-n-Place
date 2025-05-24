@@ -101,9 +101,9 @@ ros2 launch realsense2_camera rs_launch.py \
 ### 2.	In Terminal B, Run the YOLOv8 Object Detector Node
 ```bash
 cd ~/ros2_ws
-colcon build --symlink-install yolov8_object_detector
+colcon build --symlink-install --packages-select yolov8_object_detector
 source install/setup.bash	
-ros2 run yolov8_object_detector object_detector
+ros2 run yolov8_object_detector object_detector.py
 ```
 ---
 
