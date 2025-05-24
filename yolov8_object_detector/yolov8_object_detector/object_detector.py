@@ -31,7 +31,7 @@ class YOLOv8ObjectDetector(Node):
 
         # Load YOLOv8 model
         pkg = get_package_share_directory('yolov8_object_detector')
-        default_model = os.path.join(pkg, 'models', 'shapes_improved', 'best.onnx')
+        default_model = os.path.join(pkg, 'models', 'shapes_improved', 'best.pt')
         self.declare_parameter('model_path', default_model)
         model_path = self.get_parameter('model_path').value
         self.get_logger().info(f"Loading YOLOv8 model from: {model_path}")
