@@ -34,13 +34,11 @@ class GripperController(Node):
         # publishers
         self.pub = self.create_publisher(
             Float64MultiArray,
-            '/finger_width_controller/commands',
-            10
+            '/finger_width_controller/commands', 10
         )
         self.grab_pub = self.create_publisher(
             Bool,
-            '/gripper/grabbed',
-            10
+            '/gripper/grabbed', 10
         )
 
         # subscriptions
@@ -63,7 +61,13 @@ class GripperController(Node):
         self.latest_force = msg.wrench.force.z
 
     def bbox_cb(self, msg: Marker):
+        # read bounding-box width (scale.x) and center x position
         obj_width = msg.scale.x
+        obj_center_x = msg.pose.position.x
+        self.get_logger().info(
+            f"Received OBB: width={obj_width:.3f} m, center_x={obj_center_x:.3f} m"
+        )
+        # set target width with clearance
         self.target_width = obj_width + 0.01
         self.closing = False
         self.get_logger().info(
