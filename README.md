@@ -78,7 +78,7 @@ source install/setup.bash
 
 ## Subsystem Demonstration in Real Life
 
-1. View URDF in RViz
+1. View the Robot + Gripper URDF in RViz
 ```bash
 ros2 launch ur_onrobot_description view_robot.launch.py \
   ur_type:=ur3e onrobot_type:=rg2
@@ -94,10 +94,9 @@ Replace <robot_ip> with your robot’s IP, or use
 robot_ip:=fake use_fake_hardware:=true for simulation/testing.
 ```
 
-3. Start MoveIt!
+3. Start Node for Robot + Gripper
 ```bash
-ros2 launch ur_onrobot_moveit_config ur_onrobot_moveit.launch.py \
-  ur_type:=ur3e onrobot_type:=rg2
+ros2 run gripper_control gripper_control
 ```
 
 4. Check Joint States (including gripper)
