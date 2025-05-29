@@ -1,19 +1,25 @@
-#include <memory>
-#include "rclcpp/rclcpp.hpp"
-#include "bprrt/spawnmanager.hpp"  // make sure this path matches your include folder
+// File: src/box_spawner_node.cpp
 
-int main(int argc, char ** argv)
+#include "bprrt/spawnmanager.hpp"
+#include <rclcpp/rclcpp.hpp>
+
+int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("box_spawner");
+  auto node = std::make_shared<rclcpp::Node>("box_spawner_node");
 
-  // Fully-qualified SpawnManager in the bprrt namespace:
-  bprrt::SpawnManager mgr(node, "simple_box");
+  // manager will wait for /spawn_entity service in its ctor
+  auto manager = std::make_shared<bprrt::SpawnManager>(node, "simplebox");
 
-  // Spawn one box (you can increase the count or loop as desired)
-  mgr.spawnRandomBoxes(1);
+  // Timer to fire once (after 1s) and spawn 5 boxes
+  rclcpp::TimerBase::SharedPtr timer;
+  timer = node->create_wall_timer(
+    std::chrono::seconds(1),
+    [manager, &timer]() {
+      manager->spawnRandomBoxes(5);
+      timer->cancel();  // only once
+    });
 
-  // Keep the node alive for any callbacks (if needed)
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

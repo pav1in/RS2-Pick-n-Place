@@ -64,18 +64,41 @@ bool BP_RRTStar::plan()
   return false;
 }
 
-std::unique_ptr<Node> BP_RRTStar::sampleRandom() const
+// std::unique_ptr<Node> BP_RRTStar::sampleRandom() const
+// {
+//   double r = double(std::rand())/RAND_MAX;
+//   if (r < goal_bias_)
+//     return std::make_unique<Node>(goal_ptr_->x);
+
+//   Eigen::Vector3d p;
+//   p.x() = bounds_.low.x() + (bounds_.high.x() - bounds_.low.x()) * (double(std::rand()) / RAND_MAX);
+//   p.y() = bounds_.low.y() + (bounds_.high.y() - bounds_.low.y()) * (double(std::rand()) / RAND_MAX);
+//   p.z() = bounds_.low.z() + (bounds_.high.z() - bounds_.low.z()) * (double(std::rand()) / RAND_MAX);
+//   return std::make_unique<Node>(p);
+  
+// }
+
+std::unique_ptr<Node> BP_RRTStar::sampleRandom()
 {
-  double r = double(std::rand())/RAND_MAX;
-  if (r < goal_bias_)
+  // 1) Goal‐bias (unchanged) …
+  std::uniform_real_distribution<double> ud(0.0,1.0);
+  if (ud(rng_) < goal_bias_)
     return std::make_unique<Node>(goal_ptr_->x);
 
-  Eigen::Vector3d p;
-  p.x() = bounds_.low.x() + (bounds_.high.x() - bounds_.low.x()) * (double(std::rand()) / RAND_MAX);
-  p.y() = bounds_.low.y() + (bounds_.high.y() - bounds_.low.y()) * (double(std::rand()) / RAND_MAX);
-  p.z() = bounds_.low.z() + (bounds_.high.z() - bounds_.low.z()) * (double(std::rand()) / RAND_MAX);
-  return std::make_unique<Node>(p);
+  // 2) Weighted‐cell selection
+  int cell = cell_dist_(rng_);
+  auto &cube = workspace_cubes_[cell];
+
+  // 3) Uniform draw *inside* that cube → Vector3d
+  std::uniform_real_distribution<double> ux(cube.xmin(), cube.xmax()),
+                                          uy(cube.ymin(), cube.ymax()),
+                                          uz(cube.zmin(), cube.zmax());
+  Eigen::Vector3d q{ ux(rng_), uy(rng_), uz(rng_) };
+
+  // 4) Wrap that Vector3d into a Node and return
+  return std::make_unique<Node>(q);
 }
+
 
 Node* BP_RRTStar::nearestNeighbor(const Eigen::Vector3d& x_rand) const
 {
@@ -180,4 +203,16 @@ std::vector<geometry_msgs::msg::Pose> BP_RRTStar::getPathMsg() const
     poses.push_back(p);
   }
   return poses;
+}
+
+void BP_RRTStar::setSamplingWeights(const std::vector<double>& P27) {
+  if (P27.size() != 27) {
+    throw std::runtime_error("setSamplingWeights: need 27 elements");
+  }
+  weights_   = P27;
+  cell_dist_ = std::discrete_distribution<int>(weights_.begin(), weights_.end());
+}
+
+void BP_RRTStar::setWorkspaceCubes(const std::vector<Cube>& cubes) {
+  workspace_cubes_ = cubes;
 }

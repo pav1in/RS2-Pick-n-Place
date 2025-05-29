@@ -20,6 +20,10 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(Boost REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(ros_gz_interfaces REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(CGAL CONFIG REQUIRED)
+find_package(CGAL COMPONENTS Qt5)
+find_package(objectLib REQUIRED)
 
 # Include headers
 include_directories(
@@ -43,7 +47,10 @@ ament_target_dependencies(bprrt_node
   moveit_ros_planning_interface
   Eigen3
   tf2
+  tf2_ros
   tf2_geometry_msgs
+  objectLib
+  
 )
 
 # --- Box Tracker Node ---
@@ -56,6 +63,9 @@ ament_target_dependencies(box_tracker_node
   rclcpp
   gazebo_msgs
   geometry_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
 )
 
 # --- Box Spawner Node ---
@@ -71,6 +81,8 @@ ament_target_dependencies(box_spawner_node
   ament_index_cpp
   ros_gz_interfaces
 )
+
+target_link_libraries(bprrt_node objectLib::objectLib)
 
 # Install all executables
 install(TARGETS
@@ -98,5 +110,7 @@ install(DIRECTORY include/
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
 )
+
+
 
 ament_package()

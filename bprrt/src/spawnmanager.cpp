@@ -1,4 +1,5 @@
 // File: src/spawnmanager.cpp
+
 #include "bprrt/spawnmanager.hpp"
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <ros_gz_interfaces/srv/spawn_entity.hpp>
@@ -13,6 +14,7 @@
 #include <ctime>
 #include <thread>
 #include <cmath>
+#include <rclcpp/executors/single_threaded_executor.hpp>
 
 using namespace std::chrono_literals;
 
@@ -23,12 +25,9 @@ SpawnManager::SpawnManager(
   const std::string & model_name)
 : node_(node)
 {
-  // Create and wait for the Ignition factory services
-  // spawn_client_  = node_->create_client<ros_gz_interfaces::srv::SpawnEntity>("/ur3e_empty/spawn_entity");
-  // delete_client_ = node_->create_client<ros_gz_interfaces::srv::DeleteEntity>("/ur3e_empty/delete_entity");
+  // point at the *un*-namespaced factory services
   spawn_client_  = node_->create_client<ros_gz_interfaces::srv::SpawnEntity>("/spawn_entity");
   delete_client_ = node_->create_client<ros_gz_interfaces::srv::DeleteEntity>("/delete_entity");
-
 
   if (!spawn_client_->wait_for_service(5s)) {
     RCLCPP_ERROR(node_->get_logger(), "Service '/spawn_entity' not available");
@@ -37,7 +36,7 @@ SpawnManager::SpawnManager(
     RCLCPP_ERROR(node_->get_logger(), "Service '/delete_entity' not available");
   }
 
-  // Load the SDF model from package share
+  // Load the SDF from bprrt/models/<model_name>/model.sdf
   std::string pkg = ament_index_cpp::get_package_share_directory("bprrt");
   std::ifstream ifs(pkg + "/models/" + model_name + "/model.sdf");
   if (!ifs) {
@@ -57,9 +56,6 @@ geometry_msgs::msg::Pose SpawnManager::generateRandomPose()
   p.position.y = -0.3 + double(std::rand())/(RAND_MAX/0.6);
   p.position.z = 0.0;
   p.orientation.w = 1.0;
-  p.orientation.x = 0.0;
-  p.orientation.y = 0.0;
-  p.orientation.z = 0.0;
   return p;
 }
 
@@ -68,15 +64,20 @@ bool SpawnManager::spawnBox(
   const geometry_msgs::msg::Pose & pose)
 {
   auto req = std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
-  // Populate entity_factory
   req->entity_factory.name = name;
   req->entity_factory.sdf = model_xml_;
   req->entity_factory.allow_renaming = true;
   req->entity_factory.pose = pose;
-  // Optional: req->entity_factory.relative_to = "world";
 
   auto fut = spawn_client_->async_send_request(req);
-  if (rclcpp::spin_until_future_complete(node_, fut) == rclcpp::FutureReturnCode::SUCCESS && fut.get()->success) {
+
+  // spin this node in its own executor so we don't re-register it
+  rclcpp::executors::SingleThreadedExecutor exec;
+  exec.add_node(node_);
+  auto ret = exec.spin_until_future_complete(fut, 5s);
+  exec.remove_node(node_);
+  
+  if (ret == rclcpp::FutureReturnCode::SUCCESS && fut.get()->success) {
     RCLCPP_INFO(node_->get_logger(), "Spawned [%s]", name.c_str());
     spawned_boxes_.emplace_back(name, pose);
     return true;
@@ -88,12 +89,18 @@ bool SpawnManager::spawnBox(
 bool SpawnManager::deleteBox(const std::string & name)
 {
   auto req = std::make_shared<ros_gz_interfaces::srv::DeleteEntity::Request>();
-  // Specify the entity to delete
   req->entity.name = name;
   req->entity.type = ros_gz_interfaces::msg::Entity::MODEL;
 
   auto fut = delete_client_->async_send_request(req);
-  if (rclcpp::spin_until_future_complete(node_, fut) == rclcpp::FutureReturnCode::SUCCESS && fut.get()->success) {
+
+  // again, local executor for just this node
+  rclcpp::executors::SingleThreadedExecutor exec;
+  exec.add_node(node_);
+  auto ret = exec.spin_until_future_complete(fut, 5s);
+  exec.remove_node(node_);
+  
+  if (ret == rclcpp::FutureReturnCode::SUCCESS && fut.get()->success) {
     RCLCPP_INFO(node_->get_logger(), "Deleted [%s]", name.c_str());
     return true;
   }
@@ -116,12 +123,10 @@ void SpawnManager::spawnRandomBoxes(int count)
       }
       if (ok) break;
     }
-
     if (!ok) {
       RCLCPP_WARN(node_->get_logger(), "No free pose for box %d", i);
       continue;
     }
-
     auto now = node_->get_clock()->now().nanoseconds();
     std::string uname = "box_" + std::to_string(now);
     std::this_thread::sleep_for(10ms);
